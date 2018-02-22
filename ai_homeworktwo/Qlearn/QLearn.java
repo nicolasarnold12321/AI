@@ -14,8 +14,16 @@ public class QLearn {
         System.out.println("Enter a value for delta where 0<γ<1");
 
         Delta=input.nextDouble();
-        System.out.println("Enter a value for N where N>=1");
+        if(Delta<0||Delta>1){
+            System.out.println("Delta is not 0<γ<1");
+            System.exit(0);
+        }
+        System.out.println("Enter a value for N where N>=0");
         N=input.nextInt();
+        if(N<0){
+            System.out.println("N where N<0");
+            System.exit(0);
+        }
 
         double exerciseValFit =q("fit", "exercise",N);
         double exerciseValUnFit = q("unfit", "exercise",N);
