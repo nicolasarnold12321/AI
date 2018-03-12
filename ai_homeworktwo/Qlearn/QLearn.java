@@ -1,5 +1,6 @@
 import java.util.Scanner;
-
+import java.util.HashMap;
+import java.util.Map;
 public class QLearn {
     //the two matrices for our q learning algorithm
     public static double[][] exercise={{.99,8},{0.01,8},{0.2,0},{.8,0}};
@@ -8,6 +9,7 @@ public class QLearn {
     public static int N;
     //the value of the discounted value
     public static double Delta;
+    public static HashMap<String,Double> qCache=new HashMap <String,Double>();
     public static void main(String [] args){
 
         Scanner input= new Scanner(System.in);
@@ -46,9 +48,18 @@ public class QLearn {
 
     //computes the q value for N
     static double q(String state,String matrix,int index){
-        if(index==0)
-            return qstart(state,matrix);
-        return qstart(state,matrix)+((Delta)*(getProb(state,matrix,"fit")*V("fit",index-1)+getProb(state, matrix,"unfit")*V("unfit",index-1)));
+        String args=state+","+matrix+","+index;
+        Double result=qCache.get(args);
+        if(result!=null)
+            return result;
+        if(index==0){
+            result=qstart(state,matrix);
+        }
+        else{
+        result=qstart(state,matrix)+((Delta)*(getProb(state,matrix,"fit")*V("fit",index-1)+getProb(state, matrix,"unfit")*V("unfit",index-1)));
+        }
+        qCache.put(args,result);
+        return result;
     }
 
     //returns the probabilty given the state of the matrix and it's action
